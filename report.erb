@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Planet Express Weekly Shipping Report</title>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h1><p>Planet Express made <%= shipments.map {|shipment| shipment.fetch("Money").to_i }.reduce(:+) %> smackeroos this week!</p></h1>
+      <div class="summary">
+        <div class="table_container">
+          <table class="shipments">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Shipment</th>
+                <th>Crates</th>
+                <th>Smackeroos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% shipments.each do |shipment| %>
+              <tr>
+                <td><%= shipment.fetch("Destination") %></td>
+                <td><%= shipment.fetch("Shipment") %></td>
+                <td><%= shipment.fetch("Crates") %></td>
+                <td><%= shipment.fetch("Money") %></td>
+              </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr class="total_row">
+                <td>Total</td>
+                <td>&nbsp;</td>
+                <td><%= shipments.map {|shipment| shipment.fetch("Crates").to_i }.reduce(:+) %></td>
+                <td><%= shipments.map {|shipment| shipment.fetch("Money").to_i}.reduce(:+) %></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="team_photo">
+          <img src="images/bedroom.jpg" />
+          <span>Our Fearless Team</span>
+        </div>
+      </div>
+      <div class="first_row">
+        <div class="Fry_panel panel">
+          <img src="images/frychair.gif" class="portrait" />
+          <ul>
+            <li>Trips: <%= shipments.select {|shipment| shipment.fetch("Destination") == "Earth"}.count %></li>
+            <li>Total Bonus: $<%= sprintf( "%.2f", shipments.select {|shipment| shipment.fetch("Destination") == "Earth" }.map{|shipment| shipment.fetch("Money").to_i}.reduce(:+) * 0.1) %></li>
+          </ul>
+          <h1>Fry</h1>
+        </div>
+        <div class="Amy_panel panel">
+          <img src="images/amybow.gif" class="portrait" />
+          <ul>
+            <li>Trips: <%= shipments.select {|shipment| shipment.fetch("Destination") == "Mars"}.count %></li>
+            <li>Total Bonus: $<%= sprintf( "%.2f", shipments.select {|shipment| shipment.fetch("Destination") == "Mars" }.map{|shipment| shipment.fetch("Money").to_i}.reduce(:+) * 0.1) %></li>
+          </ul>
+          <h1>Amy</h1>
+        </div>
+      </div>
+      <div class="second_row">
+        <div class="Bender_panel panel">
+          <img src="images/benderroll.gif" class="portrait" />
+          <ul>
+            <li>Trips: <%= shipments.select {|shipment| shipment.fetch("Destination") == "Uranus"}.count %></li>
+            <li>Total Bonus: $<%= sprintf( "%.2f", shipments.select {|shipment| shipment.fetch("Destination") == "Uranus" }.map{|shipment| shipment.fetch("Money").to_i}.reduce(:+) * 0.1) %></li>
+          </ul>
+          <h1>Bender</h1>
+        </div>
+        <div class="Leela_panel panel">
+          <img src="images/leelabond.gif" class="portrait" />
+          <ul>
+            <li>Trips: <%= shipments.select {|shipment| shipment.fetch("Destination") != "Earth" && shipment.fetch("Destination") != "Mars" && shipment.fetch("Destination") != "Uranus"}.count %></li>
+            <li>Total Bonus: $<%= sprintf( "%.2f", shipments.select {|shipment| shipment.fetch("Destination") != "Earth" && shipment.fetch("Destination") != "Mars" && shipment.fetch("Destination") != "Uranus"}.map{|shipment| shipment.fetch("Money").to_i}.reduce(:+) * 0.1) %></li>
+          </ul>
+          <h1>Leela</h1>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
